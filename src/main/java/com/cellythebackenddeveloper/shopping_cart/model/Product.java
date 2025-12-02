@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Product {
     @Id
- @GeneratedValue (strategy= jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue (strategy= jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String brand;
