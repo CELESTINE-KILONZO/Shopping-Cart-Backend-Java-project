@@ -2,11 +2,15 @@ package com.cellythebackenddeveloper.shopping_cart.service.product;
 import com.cellythebackenddeveloper.shopping_cart.exceptions.ProductNotFoundException;
 import com.cellythebackenddeveloper.shopping_cart.model.Product;
 import com.cellythebackenddeveloper.shopping_cart.repository.ProductRepository;
-
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
+
 public class ProductService implements IProductService {
-    private ProductRepository productRepository;
+    private  final ProductRepository productRepository;
 
     @Override
     public Product addProduct(Product product) {
