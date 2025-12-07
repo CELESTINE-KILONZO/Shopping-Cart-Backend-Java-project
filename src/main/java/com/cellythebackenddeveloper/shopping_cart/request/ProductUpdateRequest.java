@@ -1,10 +1,14 @@
 package com.cellythebackenddeveloper.shopping_cart.request;
 import com.cellythebackenddeveloper.shopping_cart.model.Category;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
-public class AddProductRequest {
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductUpdateRequest {
     private Long id;
     private String name;
     private String brand;

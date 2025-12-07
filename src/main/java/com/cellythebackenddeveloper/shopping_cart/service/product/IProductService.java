@@ -1,15 +1,17 @@
 package com.cellythebackenddeveloper.shopping_cart.service.product;
 
 import com.cellythebackenddeveloper.shopping_cart.model.Product;
+import com.cellythebackenddeveloper.shopping_cart.request.AddProductRequest;
+import com.cellythebackenddeveloper.shopping_cart.request.ProductUpdateRequest;
 
 import java.util.List;
 
 public interface IProductService {
 
-    Product  addProduct( Product product);
+    Product addProduct( AddProductRequest product);
     Product getProductById(Long id);
     void deleteProductById(Long id);
-    void updateProduct(Product product , Long id);
+    Product updateProduct(ProductUpdateRequest product , Long id);
     List<Product> getProducts(Long id);
     List<Product> getProductsByCategoryName(String category);
     List<Product> getProductsByBrand(String brand);

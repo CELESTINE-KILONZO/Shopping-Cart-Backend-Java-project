@@ -1,6 +1,5 @@
 package com.cellythebackenddeveloper.shopping_cart.model;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +9,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity( name = "products")
 
@@ -30,4 +28,13 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL ,orphanRemoval = true )
     private List<Image> image;
+
+    public Product( String name, String brand, BigDecimal price,int inventory,String description,Category category) {
+        this.category = category;
+        this.description = description;
+        this.inventory = inventory;
+        this.price = price;
+        this.brand = brand;
+        this.name = name;
+    }
 }
