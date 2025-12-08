@@ -1,9 +1,7 @@
 package com.cellythebackenddeveloper.shopping_cart.service.product;
-
 import com.cellythebackenddeveloper.shopping_cart.model.Product;
 import com.cellythebackenddeveloper.shopping_cart.request.AddProductRequest;
 import com.cellythebackenddeveloper.shopping_cart.request.ProductUpdateRequest;
-
 import java.util.List;
 
 public interface IProductService {

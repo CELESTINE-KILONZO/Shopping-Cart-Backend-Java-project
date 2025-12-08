@@ -8,7 +8,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity( name = "categories")
+@Entity
+@Table(name = "categories")
 
 public class Category {
     @Id
