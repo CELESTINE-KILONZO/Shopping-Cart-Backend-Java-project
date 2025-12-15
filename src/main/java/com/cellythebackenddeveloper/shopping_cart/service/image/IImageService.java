@@ -1,13 +1,12 @@
 package com.cellythebackenddeveloper.shopping_cart.service.image;
-
 import com.cellythebackenddeveloper.shopping_cart.model.Image;
-import com.cellythebackenddeveloper.shopping_cart.model.Product;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 public interface IImageService {
 
     Image getImageById(Long id);
-    Image deleteimage(Long id);
-    void saveImage(MultipartFile file , Long productId);
+    void deleteimageById(Long id);
+    void saveImage(List<MultipartFile> files , Long productId);
     void updateImage(MultipartFile file , Long productId);
 }

@@ -1,4 +1,6 @@
 package com.cellythebackenddeveloper.shopping_cart.repository;
+import com.cellythebackenddeveloper.shopping_cart.model.Image;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public class ImageRepository {
+public interface ImageRepository extends JpaRepository<Image, Long> {
 }
