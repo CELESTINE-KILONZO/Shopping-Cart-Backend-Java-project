@@ -47,7 +47,7 @@ public class ImageService implements IImageService {
 //                .orElseThrow(() -> new ResourceNotException("No image found"));
 
     @Override
-    public void saveImage(List<MultipartFile> files, Long productId) {
+    public List<ImageDto> saveImage(List<MultipartFile> files, Long productId) {
       Product product= productService.getProductById(productId);
       List <ImageDto> savedImageDtos = new ArrayList<>();
         for (MultipartFile file : files) {
@@ -75,7 +75,7 @@ public class ImageService implements IImageService {
                 throw new RuntimeException(e.getMessage());
             }
         }
-
+        return savedImageDtos;
     }
 
     @Override
@@ -83,6 +83,7 @@ public class ImageService implements IImageService {
         Image image =getImageById(imageId);
         try {
             image.setFileName(file.getOriginalFilename());
+            image.setFileType(file.getContentType());
 //            image.setFileName(file.getOriginalFilename());
             image.setImage(new SerialBlob(file.getBytes()));
             imageRepository.save(image);
