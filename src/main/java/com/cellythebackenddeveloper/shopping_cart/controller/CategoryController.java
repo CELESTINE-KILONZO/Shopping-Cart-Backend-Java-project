@@ -38,4 +38,14 @@ public class CategoryController {
          return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("ERROR:" , INTERNAL_SERVER_ERROR ));
         }
     }
+
+    @GetMapping("/getCategoryById/{id}")
+    public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long id) {
+        try {
+            Category category = categoryService.getCategoryById(id);
+            return ResponseEntity.ok(new ApiResponse( "Category retrieved successfully" , category));
+        } catch (Exception e) {
+         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("ERROR:" , INTERNAL_SERVER_ERROR ));
+        }
+    }
 }
