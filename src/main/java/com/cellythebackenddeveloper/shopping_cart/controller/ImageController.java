@@ -1,5 +1,6 @@
 package com.cellythebackenddeveloper.shopping_cart.controller;
 import com.cellythebackenddeveloper.shopping_cart.dto.ImageDto;
+import com.cellythebackenddeveloper.shopping_cart.exceptions.ResourceNotException;
 import com.cellythebackenddeveloper.shopping_cart.model.Image;
 import com.cellythebackenddeveloper.shopping_cart.response.ApiResponse;
 import com.cellythebackenddeveloper.shopping_cart.service.image.IImageService;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.sql.SQLException;
 import java.util.List;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,5 +40,18 @@ public class ImageController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(image.getFileType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + image.getFileName() + "\"")
                 .body(resource);
+    }
+
+    public ResponseEntity <ApiResponse> updateImage(@RequestParam MultipartFile file , @RequestParam Long imageId){
+        try {
+            Image image=iimageService.getImageById(imageId);
+            if(image!=null){
+                iimageService.updateImage( file , imageId);
+                return ResponseEntity.ok(new ApiResponse("Image updated successfully",null));
+            }
+        } catch (ResourceNotException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse( e.getMessage() ,null));
+        }
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Failed to update image: ", INTERNAL_SERVER_ERROR));
     }
 }
