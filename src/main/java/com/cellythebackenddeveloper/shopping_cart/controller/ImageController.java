@@ -42,6 +42,7 @@ public class ImageController {
                 .body(resource);
     }
 
+    @PutMapping("/image/{imageId}/update")
     public ResponseEntity <ApiResponse> updateImage(@RequestParam MultipartFile file , @RequestParam Long imageId){
         try {
             Image image=iimageService.getImageById(imageId);
@@ -53,5 +54,19 @@ public class ImageController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse( e.getMessage() ,null));
         }
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Failed to update image: ", INTERNAL_SERVER_ERROR));
+    }
+
+    @DeleteMapping("/image/{imageId}/delete" )
+    public ResponseEntity <ApiResponse> deleteImage(@PathVariable Long imageId){
+        try {
+            Image image=iimageService.getImageById(imageId);
+            if(image!=null){
+                iimageService.deleteimageById(imageId);
+                return ResponseEntity.ok(new ApiResponse("Image deleted successfully",null));
+            }
+        } catch (ResourceNotException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse( e.getMessage() ,null));
+        }
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Failed to delete image: ", INTERNAL_SERVER_ERROR));
     }
 }
