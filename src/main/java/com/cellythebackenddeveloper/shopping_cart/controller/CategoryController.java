@@ -44,7 +44,7 @@ public class CategoryController {
             Category category = categoryService.getCategoryById(id);
             return ResponseEntity.ok(new ApiResponse("Category retrieved successfully", category));
         } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("ERROR:", INTERNAL_SERVER_ERROR));
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("sucg category do not exist:",null));
         }
     }
 
