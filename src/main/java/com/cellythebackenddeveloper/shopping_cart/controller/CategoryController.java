@@ -6,19 +6,17 @@ import com.cellythebackenddeveloper.shopping_cart.service.category.ICategoryServ
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix/}categories")
+@RequestMapping("${api.prefix/}category")
 
 public class CategoryController {
     private final ICategoryService categoryService;
 
-    @PostMapping("/createCategory")
+    @PostMapping("/createCategory/")
     public ResponseEntity<ApiResponse> createCategory(@RequestBody Category name) {
         try {
             Category category = categoryService.createCategory(name);
@@ -28,7 +26,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/getAllCategories")
+    @GetMapping("/getAllCategories/")
     public ResponseEntity<ApiResponse> getAllCategories() {
         try {
             List<Category> categories = categoryService.getAllCategories();
@@ -38,23 +36,44 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/getCategoryById/{id}")
+    @GetMapping("/{id}/getCategoryById/")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long id) {
         try {
             Category category = categoryService.getCategoryById(id);
             return ResponseEntity.ok(new ApiResponse("Category retrieved successfully", category));
         } catch (Exception e) {
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("sucg category do not exist:",null));
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("such category do not exist:",null));
+        }
+    }
+
+    @GetMapping("/{name}/getCategoryByName/")
+    public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String name) {
+        try {
+            Category category = categoryService.getCategoryByName(name);
+            return ResponseEntity.ok(new ApiResponse("Category retrieved successfully", category));
+        } catch (Exception e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("such category do not exist:",null));
         }
     }
 
     @PutMapping("/updateCategory/{id}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Long id, @RequestBody Category category) {
         try {
-            Category updateCategory = categoryService.updateCategory(id, category.getName());
+            Category updateCategory = categoryService.updateCategory(id, category);
             return ResponseEntity.ok(new ApiResponse("Category updated successfully", updateCategory));
         } catch (Exception e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
+
+    @DeleteMapping("/deleteCategory/{id}")
+    public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long id) {
+        try {
+            categoryService.deleteCategory(id);
+            return ResponseEntity.ok(new ApiResponse("Category deleted successfully", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
 }

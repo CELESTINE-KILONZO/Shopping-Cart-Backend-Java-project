@@ -33,12 +33,11 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public Category updateCategory(Long id, String name) {
+    public Category updateCategory(Long id,Category category) {
         return categoryRepository.findById(id)
                 .map(oldCategory -> {
-                    oldCategory.setName(name);
-                    return categoryRepository.save(oldCategory);
-                })
+                    oldCategory.setName(category.getName());
+                    return categoryRepository.save(oldCategory);})
                 .orElseThrow(() -> new ResourceNotException("Category not found with id: " + id));
     }
 
@@ -46,11 +45,8 @@ public class CategoryService implements ICategoryService {
     public void deleteCategory(Long id) {
         categoryRepository.findById(id)
                 .ifPresentOrElse(
-                        categoryRepository::delete,
-                        () -> {
-                            throw new ResourceNotException("Category not found with id: " + id);
-                        }
-                );
+                        categoryRepository::delete, () -> {
+                            throw new ResourceNotException("Category not found with id: " + id);});
     }
 
     @Override
