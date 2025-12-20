@@ -5,8 +5,11 @@ import com.cellythebackenddeveloper.shopping_cart.response.ApiResponse;
 import com.cellythebackenddeveloper.shopping_cart.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -26,5 +29,15 @@ public class ProductController {
         }
     }
 
+@GetMapping
+    public ResponseEntity <ApiResponse> getAllProducts() {
+        try {
+            List<Product> products = productService.getProducts();
+            return ResponseEntity.ok(new ApiResponse("Products retrieved successfully" , products));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Failed to retrieve products: " ,null));
+        }
 
+
+    }
 }
