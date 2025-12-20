@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @GetMapping("/getproductbyid")
-    public ResponseEntity <ApiResponse> getProductsById(Long id) {
+    public ResponseEntity<ApiResponse> getProductsById(Long id) {
         try {
             Product product = productService.getProductById(id);
             return ResponseEntity.ok(new ApiResponse("Product retrieved successfully", product));
@@ -50,13 +50,44 @@ public class ProductController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity <ApiResponse> getProductsByName(String name) {
+    @GetMapping("/getproductsbyname")
+    public ResponseEntity<ApiResponse> getProductsByName(String name) {
         try {
             List<Product> products = productService.getProductsByName(name);
             return ResponseEntity.ok(new ApiResponse("Products retrieved successfully", products));
         } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Failed to retrieve products: ", null));
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("product not found", null));
         }
     }
+
+    @GetMapping("/getproductsbybrand")
+    public ResponseEntity<ApiResponse> getProductsByBrand(String brand) {
+        try {
+            List<Product> products = productService.getProductsByBrand(brand);
+            return ResponseEntity.ok(new ApiResponse("Products retrieved successfully", products));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("product not found", null));
+        }
     }
+
+    @GetMapping("/getproductsbycategory")
+    public ResponseEntity<ApiResponse> getProductsByCategory(String category) {
+        try {
+            List<Product> products = productService.getProductsByCategoryName(category);
+            return ResponseEntity.ok(new ApiResponse("Products retrieved successfully", products));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("product not found", null));
+        }
+    }
+
+    @GetMapping("/getproductsbyprice")
+    public ResponseEntity<ApiResponse> getProductsByPrice(Double price) {
+        try {
+            List<Product> products = productService.getProductsByPrice(price);
+            return ResponseEntity.ok(new ApiResponse("Products retrieved successfully", products));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("product not found", null));
+        }
+    }
+
+}
