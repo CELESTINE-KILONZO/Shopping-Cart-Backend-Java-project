@@ -13,7 +13,8 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
-@RestController("{api.prefix}/products")
+@RestController
+@RequestMapping("${api.prefix}/products")
 @RequiredArgsConstructor
 
 public class ProductController {
