@@ -7,10 +7,7 @@ import com.cellythebackenddeveloper.shopping_cart.response.ApiResponse;
 import com.cellythebackenddeveloper.shopping_cart.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -129,6 +126,16 @@ public class ProductController {
             return ResponseEntity.ok(new ApiResponse("Product updated successfully", updatedProduct));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Failed to update product: ", null));
+        }
+    }
+
+    @DeleteMapping("/deleteproduct")
+    public ResponseEntity<ApiResponse> deleteProduct(Long id) {
+        try {
+            productService.deleteProductById(id);
+            return ResponseEntity.ok(new ApiResponse("Product deleted successfully", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Failed to delete product: ", null));
         }
     }
 }
