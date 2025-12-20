@@ -90,4 +90,34 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/countproductsbybrandandname")
+    public ResponseEntity<ApiResponse> countProductsByBrandAndName(String brand, String name) {
+        try {
+            Long count = productService.countProductsByBrandAndName(brand, name);
+            return ResponseEntity.ok(new ApiResponse("Products counted successfully", count));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Failed to count products", null));
+        }
+    }
+
+    @GetMapping("/getproductsbycategoryandbrand")
+    public ResponseEntity<ApiResponse> getProductsByCategoryAndBrand(String category, String brand) {
+        try {
+            List<Product> products = productService.getProductByCategoryNameAndBrand(category, brand);
+            return ResponseEntity.ok(new ApiResponse("Products retrieved successfully", products));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("product not found", null));
+        }
+    }
+
+    @GetMapping("/getproductsbybrandandname")
+    public ResponseEntity<ApiResponse> getProductsByBrandAndName(String brand, String name) {
+        try {
+            List<Product> products = productService.getProductByBrandAndName(brand, name);
+            return ResponseEntity.ok(new ApiResponse("Products retrieved successfully", products));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("product not found", null));
+        }
+    }
+
 }
