@@ -11,12 +11,12 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix/}category")
+@RequestMapping("${api.prefix}/category")
 
 public class CategoryController {
     private final ICategoryService categoryService;
 
-    @PostMapping("/createCategory/")
+    @PostMapping("/createCategory")
     public ResponseEntity<ApiResponse> createCategory(@RequestBody Category name) {
         try {
             Category category = categoryService.createCategory(name);
@@ -26,7 +26,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/getAllCategories/")
+    @GetMapping("/getAllCategories")
     public ResponseEntity<ApiResponse> getAllCategories() {
         try {
             List<Category> categories = categoryService.getAllCategories();
@@ -36,7 +36,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/{id}/getCategoryById/")
+    @GetMapping("/{id}/getCategoryById")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long id) {
         try {
             Category category = categoryService.getCategoryById(id);
@@ -46,7 +46,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/{name}/getCategoryByName/")
+    @GetMapping("/{name}/getCategoryByName")
     public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String name) {
         try {
             Category category = categoryService.getCategoryByName(name);

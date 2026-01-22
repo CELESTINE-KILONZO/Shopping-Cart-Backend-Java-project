@@ -21,7 +21,7 @@ public class ProductController {
     private final IProductService productService;
 
     @PostMapping("/createProduct")
-    public ResponseEntity<ApiResponse> createProduct(AddProductRequest addProductRequest) {
+    public ResponseEntity<ApiResponse> createProduct(@RequestBody AddProductRequest addProductRequest) {
         try {
             Product product = productService.addProduct(addProductRequest);
             return ResponseEntity.ok(new ApiResponse("Product created successfully", product));
@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @GetMapping("/ {id}/getproductbyid")
-    public ResponseEntity<ApiResponse> getProductsById(Long id) {
+    public ResponseEntity<ApiResponse> getProductsById(@PathVariable Long id) {
         try {
             Product product = productService.getProductById(id);
             return ResponseEntity.ok(new ApiResponse("Product retrieved successfully", product));
@@ -50,7 +50,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/getproductsbyname")
+    @GetMapping("{name}/getproductsbyname")
     public ResponseEntity<ApiResponse> getProductsByName(@PathVariable String name) {
         try {
             List<Product> products = productService.getProductsByName(name);
@@ -86,7 +86,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/getproductsbyprice")
+    @GetMapping("{price}/getproductsbyprice")
     public ResponseEntity<ApiResponse> getProductsByPrice(@PathVariable Double price) {
         try {
             List<Product> products = productService.getProductsByPrice(price);
@@ -143,7 +143,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}/deleteproduct")
-    public ResponseEntity<ApiResponse> deleteProduct(Long id) {
+    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long id) {
         try {
             productService.deleteProductById(id);
             return ResponseEntity.ok(new ApiResponse("Product deleted successfully", null));
