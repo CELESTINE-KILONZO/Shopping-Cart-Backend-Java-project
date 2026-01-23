@@ -33,17 +33,50 @@ public class ImageController {
         }
     }
 
-    @GetMapping("image/download/{imageId}")
-    public ResponseEntity<ByteArrayResource>downloadImage(@PathVariable Long imageId) throws SQLException {
-        Image image=iimageService.getImageById(imageId);
-        ByteArrayResource resource = new ByteArrayResource(image.getImage().getBytes(1, (int) image.getImage().length()));
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(image.getFileType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + image.getFileName() + "\"")
+//    @GetMapping("image/download/{imageId}")
+//    public ResponseEntity<ByteArrayResource>downloadImage(@PathVariable Long imageId) throws SQLException {
+//        Image image=iimageService.getImageById(imageId);
+//        ByteArrayResource resource = new ByteArrayResource(image.getImage().getBytes(1, (int) image.getImage().length()));
+//        return ResponseEntity.ok().contentType(MediaType.parseMediaType(image.getFileType()))
+//                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + image.getFileName() + "\"")
+//                .body(resource);
+//    }
+@GetMapping("/image/download/{imageId}")
+public ResponseEntity<ByteArrayResource> downloadImage(@PathVariable Long imageId) {
+    try {
+        System.out.println("=== DOWNLOAD DEBUG ===");
+        System.out.println("Attempting to download image with ID: " + imageId);
+
+        Image image = iimageService.getImageById(imageId);
+        System.out.println("Image found: " + image.getFileName());
+        System.out.println("File type: " + image.getFileType());
+        System.out.println("Image blob is null? " + (image.getImage() == null));
+
+        if (image.getImage() == null) {
+            System.out.println("ERROR: Image blob is null!");
+            return ResponseEntity.status(NOT_FOUND).body(null);
+        }
+
+        byte[] imageBytes = image.getImage().getBytes(1, (int) image.getImage().length());
+        System.out.println("Image size in bytes: " + imageBytes.length);
+
+        ByteArrayResource resource = new ByteArrayResource(imageBytes);
+        System.out.println("Resource created successfully");
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(image.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getFileName() + "\"")
                 .body(resource);
+
+    } catch (Exception e) {
+        System.out.println("ERROR during download: " + e.getMessage());
+        e.printStackTrace();
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(null);
     }
+}
 
     @PutMapping("/image/{imageId}/update")
-    public ResponseEntity <ApiResponse> updateImage(@RequestParam MultipartFile file , @RequestParam Long imageId){
+    public ResponseEntity <ApiResponse> updateImage(@RequestParam MultipartFile file , @PathVariable Long imageId){
         try {
             Image image=iimageService.getImageById(imageId);
             if(image!=null){

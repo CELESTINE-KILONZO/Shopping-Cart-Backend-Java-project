@@ -46,37 +46,73 @@ public class ImageService implements IImageService {
 //                })
 //                .orElseThrow(() -> new ResourceNotException("No image found"));
 
-    @Override
-    public List<ImageDto> saveImage(List<MultipartFile> files, Long productId) {
-      Product product= productService.getProductById(productId);
-      List <ImageDto> savedImageDtos = new ArrayList<>();
-        for (MultipartFile file : files) {
-            try {
-                Image image = new Image();
-                image.setFileName(file.getOriginalFilename());
-                image.setFileType(file.getContentType());
-                image.setImage(new SerialBlob(file.getBytes()));
-                image.setProduct(product);
+//    @Override
+//    public List<ImageDto> saveImage(List<MultipartFile> files, Long productId) {
+//      Product product= productService.getProductById(productId);
+//      List <ImageDto> savedImageDtos = new ArrayList<>();
+//        for (MultipartFile file : files) {
+//            try {
+//                Image image = new Image();
+//                image.setFileName(file.getOriginalFilename());
+//                image.setFileType(file.getContentType());
+//                image.setImage(new SerialBlob(file.getBytes()));
+//                image.setProduct(product);
+//
+//                String buildDownloadUrl = "/api/v1/images/image/download";
+//                String DownloadUrl = buildDownloadUrl + image.getId();
+//                image.setDownloadUrl(DownloadUrl);
+//                Image savedImage = imageRepository.save (image);
+//                savedImage.setDownloadUrl(buildDownloadUrl + savedImage.getId());
+//                imageRepository.save(image);
+//
+//                ImageDto imageDto = new ImageDto();
+//                imageDto.setId(savedImage.getId());
+//                imageDto.setImageName(savedImage.getFileName());
+//                imageDto.setDownloadUrl(savedImage.getDownloadUrl());
+//                savedImageDtos.add(imageDto);
+//
+//            } catch (IOException | SQLException e) {
+//                throw new RuntimeException(e.getMessage());
+//            }
+//        }
+//        return savedImageDtos;
+//    }
+@Override
+public List<ImageDto> saveImage(List<MultipartFile> files, Long productId) {
+    Product product = productService.getProductById(productId);
+    List<ImageDto> savedImageDtos = new ArrayList<>();
 
-                String buildDownloadUrl = "/api/v1/images/image/download";
-                String DownloadUrl = buildDownloadUrl + image.getId();
-                image.setDownloadUrl(DownloadUrl);
-                Image savedImage = imageRepository.save (image);
-                savedImage.setDownloadUrl(buildDownloadUrl + savedImage.getId());
-                imageRepository.save(image);
+    for (MultipartFile file : files) {
+        try {
+            Image image = new Image();
+            image.setFileName(file.getOriginalFilename());
+            image.setFileType(file.getContentType());
+            image.setImage(new SerialBlob(file.getBytes()));
+            image.setProduct(product);
 
-                ImageDto imageDto = new ImageDto();
-                imageDto.setId(savedImage.getId());
-                imageDto.setImageName(savedImage.getFileName());
-                imageDto.setDownloadUrl(savedImage.getDownloadUrl());
-                savedImageDtos.add(imageDto);
+            // Save FIRST to get the ID
+            Image savedImage = imageRepository.save(image);
 
-            } catch (IOException | SQLException e) {
-                throw new RuntimeException(e.getMessage());
-            }
+            // THEN build the download URL with the actual ID (notice the / at the end)
+            String buildDownloadUrl = "/shoppingcart/v1/api/images/image/download/";
+            savedImage.setDownloadUrl(buildDownloadUrl + savedImage.getId());
+
+            // Save AGAIN with the updated download URL (use savedImage, not image!)
+            imageRepository.save(savedImage);
+
+            // Create DTO
+            ImageDto imageDto = new ImageDto();
+            imageDto.setId(savedImage.getId());
+            imageDto.setImageName(savedImage.getFileName());
+            imageDto.setDownloadUrl(savedImage.getDownloadUrl());
+            savedImageDtos.add(imageDto);
+
+        } catch (IOException | SQLException e) {
+            throw new RuntimeException(e.getMessage());
         }
-        return savedImageDtos;
     }
+    return savedImageDtos;
+}
 
     @Override
     public void updateImage(MultipartFile file, Long imageId) {
