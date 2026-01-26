@@ -1,4 +1,5 @@
 package com.cellythebackenddeveloper.shopping_cart.service.product;
+import com.cellythebackenddeveloper.shopping_cart.dto.CategoryDto;
 import com.cellythebackenddeveloper.shopping_cart.dto.ImageDto;
 import com.cellythebackenddeveloper.shopping_cart.dto.ProductDto;
 import com.cellythebackenddeveloper.shopping_cart.exceptions.ProductNotFoundException;
@@ -13,7 +14,6 @@ import com.cellythebackenddeveloper.shopping_cart.request.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -127,6 +127,11 @@ public class ProductService implements IProductService {
     @Override
     public ProductDto convertToDto(Product product) {
         ProductDto productDto = modelMapper.map(product, ProductDto.class);
+
+        if (product.getCategory() != null) {
+            CategoryDto categoryDto = modelMapper.map(product.getCategory(), CategoryDto.class);
+            productDto.setCategory(categoryDto);
+        }
         List<Image> images = imageRepository.findByProductId(product.getId());
         List<ImageDto> imageDtos = images.stream()
                 .map(image -> modelMapper.map(image, ImageDto.class))

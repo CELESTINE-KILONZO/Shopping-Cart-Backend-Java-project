@@ -19,8 +19,6 @@ public interface IProductService {
     List<Product> getProductByCategoryNameAndBrand(String category, String brand);
     List<Product> getProductByBrandAndName(String brand, String name);
     Long countProductsByBrandAndName(String brand, String name);
-
     List<ProductDto> getConvertedProducts(List<Product> products);
-
     ProductDto convertToDto(Product product);
 }
