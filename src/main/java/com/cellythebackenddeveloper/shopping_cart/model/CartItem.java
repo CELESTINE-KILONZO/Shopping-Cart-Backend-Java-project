@@ -24,11 +24,11 @@ public class CartItem {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    public void updateTotalPrice() {
+    public void setTotalPrice() {
         this.totalPrice = this.unitPrice.multiply(new BigDecimal(quantity));
     }
 }
