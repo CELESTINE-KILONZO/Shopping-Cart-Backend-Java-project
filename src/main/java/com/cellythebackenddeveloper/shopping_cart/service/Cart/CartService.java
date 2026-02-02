@@ -33,7 +33,7 @@ public class CartService  implements ICartService {
 
     @Override
     public BigDecimal getTotalCartPrice(Long id) {
-        Cart cart = cartRepository.findCartById(id).orElseThrow(() -> new ResourceNotException("Cart not found with id: " + id));
+        Cart cart =getCartById(id);
         return cart.getTotalAmount();
     }
 }

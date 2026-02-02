@@ -35,4 +35,13 @@ public class CartController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse( "Cart not found,please check your cart id", null));
         }
     }
+
+    @GetMapping("/{cartId}/totalPrice")
+    public ResponseEntity <ApiResponse> getTotalCartPrice(@PathVariable Long cartId) {
+        try {
+            return ResponseEntity.ok(new ApiResponse("Total cart price retrieved successfully", cartService.getTotalCartPrice(cartId)));
+        } catch (ResourceNotException e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse( "Cart not found,please check your cart id", null));
+        }
+    }
 }
