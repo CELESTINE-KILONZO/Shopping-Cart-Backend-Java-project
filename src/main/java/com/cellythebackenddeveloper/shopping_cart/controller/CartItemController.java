@@ -2,10 +2,10 @@ package com.cellythebackenddeveloper.shopping_cart.controller;
 import com.cellythebackenddeveloper.shopping_cart.exceptions.ResourceNotException;
 import com.cellythebackenddeveloper.shopping_cart.response.ApiResponse;
 import com.cellythebackenddeveloper.shopping_cart.service.Cart.ICartItemService;
+import com.cellythebackenddeveloper.shopping_cart.service.Cart.ICartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
@@ -13,10 +13,16 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("${api.prefix}/cartItems")
 public class CartItemController {
     private final ICartItemService cartItemService;
+    private ICartService cartService;
 
     @PostMapping("/addItemToCart")
     public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
         try {
+
+            if (cartId == null) {
+                cartId = cartService.initializeNewCart();
+            }
+
             cartItemService.addItemToCart(cartId, productId, quantity);
             return ResponseEntity.ok(new ApiResponse("Item added to cart successfully", null));
         } catch (ResourceNotException e) {
