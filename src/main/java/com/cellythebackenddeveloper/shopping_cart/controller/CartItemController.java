@@ -13,10 +13,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("${api.prefix}/cartItems")
 public class CartItemController {
     private final ICartItemService cartItemService;
-    private ICartService cartService;
+    private  final ICartService cartService;
 
     @PostMapping("/addItemToCart")
-    public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
+    public ResponseEntity<ApiResponse> addItemToCart(@RequestParam (required = false) Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
         try {
 
             if (cartId == null) {
