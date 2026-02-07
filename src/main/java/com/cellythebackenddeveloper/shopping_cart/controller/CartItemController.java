@@ -40,10 +40,11 @@ public class CartItemController {
         }
     }
 
-    @PutMapping("/{cartId}/{productId}/updateItemQuantity")
+    @PutMapping("/cart/{cartId}/item/{productId}/updateItemQuantity")
     public ResponseEntity<ApiResponse> updateItemQuantity(@PathVariable Long cartId,@PathVariable Long productId, @RequestParam int quantity) {
         try {
             cartItemService.updateItemQuantity(cartId, productId, quantity);
+            System.out.println("THe quantity before update is: " + quantity);
             return ResponseEntity.ok(new ApiResponse("Item quantity updated successfully", null));
         } catch (ResourceNotException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
