@@ -5,6 +5,8 @@ import com.cellythebackenddeveloper.shopping_cart.repository.CartItemRepository;
 import com.cellythebackenddeveloper.shopping_cart.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 
 @Service
@@ -24,6 +26,7 @@ public class CartService  implements ICartService {
         return cartRepository.save(cart);
     }
 
+    @Transactional
     @Override
     public void clearCart(Long id) {
         Cart cart = cartRepository.findCartById(id).orElseThrow(() -> new ResourceNotException("Cart not found with id: " + id));
