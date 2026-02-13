@@ -8,12 +8,9 @@ import com.cellythebackenddeveloper.shopping_cart.model.Product;
 import com.cellythebackenddeveloper.shopping_cart.repository.OrderRepository;
 import com.cellythebackenddeveloper.shopping_cart.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -24,7 +21,7 @@ public class OrderService implements iOrderService {
     private final ProductRepository productRepository;
 
     @Override
-    public Order createOrder(Long userId) {
+    public Order placeOrder(Long userId) {
         return null;
     }
 
