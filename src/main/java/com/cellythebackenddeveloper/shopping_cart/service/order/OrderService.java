@@ -7,10 +7,12 @@ import com.cellythebackenddeveloper.shopping_cart.model.OrderItem;
 import com.cellythebackenddeveloper.shopping_cart.model.Product;
 import com.cellythebackenddeveloper.shopping_cart.repository.OrderRepository;
 import com.cellythebackenddeveloper.shopping_cart.repository.ProductRepository;
+import com.cellythebackenddeveloper.shopping_cart.service.Cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -19,15 +21,23 @@ import java.util.List;
 public class OrderService implements iOrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final CartService cartService;
 
     @Override
     public Order placeOrder(Long userId) {
-        return null;
+        Cart cart = cartService.getCartByUserId(userId);
+        Order order = createOrder(cart);
+        List<OrderItem> orderItems = createOrderItems(order, cart);
+        order.setOrderItems(new HashSet<>(orderItems));
+        order.setTotalAmount(calculateTotalAmount(orderItems));
+        Order savedOrder = orderRepository.save(order);
+        cartService.clearCart(cart.getId());
+        return savedOrder;
     }
 
     private Order createOrder(Cart cart){
         Order order = new Order();
-        //set user
+        order.setUser(cart.getUser());
         order.setOrderStatus(OrderStatus.PENDING);
         order.setOrderDate(LocalDate.now());
         return order;
