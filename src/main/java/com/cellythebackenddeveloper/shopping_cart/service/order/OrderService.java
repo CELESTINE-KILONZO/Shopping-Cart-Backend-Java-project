@@ -68,4 +68,9 @@ public class OrderService implements iOrderService {
     public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotException("Order not found"));
     }
+
+    @Override
+    public List<Order> getOrdersByUserId(Long userId) {
+        return orderRepository.findByUserId(userId);
+    }
 }

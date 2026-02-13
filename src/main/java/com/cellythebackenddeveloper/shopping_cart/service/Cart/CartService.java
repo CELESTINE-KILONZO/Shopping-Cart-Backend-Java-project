@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 
-public class CartService  implements ICartService {
+public class CartService implements ICartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
 //    private final AtomicLong cartIdGenerator = new AtomicLong(0);
@@ -37,20 +37,27 @@ public class CartService  implements ICartService {
 
     @Override
     public BigDecimal getTotalCartPrice(Long id) {
-        Cart cart =getCartById(id);
+        Cart cart = getCartById(id);
         return cart.getTotalAmount();
     }
 
-//    @Override
+    //    @Override
 //    public Long initializeNewCart() {
 //          Cart newCart = new Cart();
 //          Long newCartId = cartIdGenerator.incrementAndGet();
 //          newCart.setId(newCartId);
 //          return cartRepository.save(newCart).getId();
 //      }
-@Override
-public Long initializeNewCart() {
-    Cart newCart = new Cart();
-    return cartRepository.save(newCart).getId();
-}
+    @Override
+    public Long initializeNewCart() {
+        Cart newCart = new Cart();
+        return cartRepository.save(newCart).getId();
+    }
+
+    public Cart getCartByUserId(Long userId) {
+        Cart cart = cartRepository.findCartByUserId(userId).orElseThrow(() -> new ResourceNotException("Cart not found for user id: " + userId));
+        BigDecimal totalPrice = cart.getTotalAmount();
+        cart.setTotalAmount(totalPrice);
+        return cartRepository.save(cart);
+    }
 }
