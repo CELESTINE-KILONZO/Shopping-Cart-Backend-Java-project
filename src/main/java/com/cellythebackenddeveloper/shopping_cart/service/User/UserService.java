@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 
@@ -20,18 +22,27 @@ public class UserService implements  IUserService {
 
     @Override
     public User createUser(CreateUserRequest request) {
-        return null;
+        return Optional.of(request).map(req -> {
+            User user = new User();
+            user.setFirstName(req.getFirstName());
+            user.setLastName(req.getLastName());
+            user.setEmail(req.getEmail());
+            user.setPassword(req.getPassword());
+            return userRepository.save(user);
+        }).orElseThrow(() -> new RuntimeException("Invalid request data"));
     }
 
     @Override
     public User updateUser(Long userId, UpdateUserRequest request) {
-        return null;
+        return  userRepository.findById(userId).map(estistingUser -> {
+            estistingUser.setFirstName(request.getFirstName());
+            estistingUser.setLastName(request.getLastName());
+            return userRepository.save(estistingUser);
+        }).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
     }
 
     @Override
     public void deleteUser(Long id) {
-//        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-//        userRepository.delete(user);
         userRepository.findById(id).ifPresentOrElse(userRepository ::delete, () -> {
             throw new RuntimeException("User not found with id: " + id); });
 
