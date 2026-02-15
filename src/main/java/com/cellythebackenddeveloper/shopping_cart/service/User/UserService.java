@@ -15,7 +15,7 @@ public class UserService implements  IUserService {
 
     @Override
     public User getUserById(Long id) {
-        return null;
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
     @Override
@@ -30,6 +30,10 @@ public class UserService implements  IUserService {
 
     @Override
     public void deleteUser(Long id) {
+//        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+//        userRepository.delete(user);
+        userRepository.findById(id).ifPresentOrElse(userRepository ::delete, () -> {
+            throw new RuntimeException("User not found with id: " + id); });
 
     }
 }
