@@ -1,10 +1,10 @@
 package com.cellythebackenddeveloper.shopping_cart.service.User;
+import com.cellythebackenddeveloper.shopping_cart.exceptions.AlreadyExistException;
 import com.cellythebackenddeveloper.shopping_cart.model.User;
 import com.cellythebackenddeveloper.shopping_cart.repository.UserRepository;
 import com.cellythebackenddeveloper.shopping_cart.request.CreateUserRequest;
 import com.cellythebackenddeveloper.shopping_cart.request.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class UserService implements  IUserService {
             user.setEmail(req.getEmail());
             user.setPassword(req.getPassword());
             return userRepository.save(user);
-        }).orElseThrow(() -> new RuntimeException("Invalid request data"));
+        }).orElseThrow(() -> new AlreadyExistException("User with email " + request.getEmail() + " already exists"));
     }
 
     @Override

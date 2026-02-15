@@ -1,4 +1,6 @@
 package com.cellythebackenddeveloper.shopping_cart.service.order;
+import com.cellythebackenddeveloper.shopping_cart.dto.OrderDto;
+import com.cellythebackenddeveloper.shopping_cart.dto.OrderItemDto;
 import com.cellythebackenddeveloper.shopping_cart.enums.OrderStatus;
 import com.cellythebackenddeveloper.shopping_cart.exceptions.ResourceNotException;
 import com.cellythebackenddeveloper.shopping_cart.model.Cart;
@@ -9,6 +11,7 @@ import com.cellythebackenddeveloper.shopping_cart.repository.OrderRepository;
 import com.cellythebackenddeveloper.shopping_cart.repository.ProductRepository;
 import com.cellythebackenddeveloper.shopping_cart.service.Cart.CartService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,6 +25,7 @@ public class OrderService implements iOrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final CartService cartService;
+    private final ModelMapper modelMapper;
 
     @Override
     public Order placeOrder(Long userId) {
@@ -65,12 +69,21 @@ public class OrderService implements iOrderService {
     }
 
     @Override
-    public Order getOrderById(Long orderId) {
-        return orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotException("Order not found"));
+    public OrderDto getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .map(this::convertToDto)
+                .orElseThrow(() -> new ResourceNotException("Order not found with id: " + orderId));
     }
 
     @Override
-    public List<Order> getOrdersByUserId(Long userId) {
-        return orderRepository.findByUserId(userId);
+    public List<OrderDto> getOrdersByUserId(Long userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return orders.stream()
+                .map(this::convertToDto)
+                .toList();
+    }
+
+    private OrderDto convertToDto(Order order) {
+        return modelMapper.map(order, OrderDto.class);
     }
 }
