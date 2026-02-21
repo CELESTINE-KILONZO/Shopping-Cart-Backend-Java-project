@@ -34,10 +34,10 @@ public class UserService implements  IUserService {
 
     @Override
     public User updateUser(Long userId, UpdateUserRequest request) {
-        return  userRepository.findById(userId).map(estistingUser -> {
-            estistingUser.setFirstName(request.getFirstName());
-            estistingUser.setLastName(request.getLastName());
-            return userRepository.save(estistingUser);
+        return  userRepository.findById(userId).map(existingUser -> {
+            existingUser.setFirstName(request.getFirstName());
+            existingUser.setLastName(request.getLastName());
+            return userRepository.save(existingUser);
         }).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
     }
 
