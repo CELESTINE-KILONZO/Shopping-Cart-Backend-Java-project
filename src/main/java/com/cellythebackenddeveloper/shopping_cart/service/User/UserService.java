@@ -1,10 +1,12 @@
 package com.cellythebackenddeveloper.shopping_cart.service.User;
+import com.cellythebackenddeveloper.shopping_cart.dto.UserDto;
 import com.cellythebackenddeveloper.shopping_cart.exceptions.AlreadyExistException;
 import com.cellythebackenddeveloper.shopping_cart.model.User;
 import com.cellythebackenddeveloper.shopping_cart.repository.UserRepository;
 import com.cellythebackenddeveloper.shopping_cart.request.CreateUserRequest;
 import com.cellythebackenddeveloper.shopping_cart.request.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +16,7 @@ import java.util.Optional;
 
 public class UserService implements  IUserService {
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public User getUserById(Long id) {
@@ -46,5 +49,10 @@ public class UserService implements  IUserService {
         userRepository.findById(id).ifPresentOrElse(userRepository ::delete, () -> {
             throw new RuntimeException("User not found with id: " + id); });
 
+    }
+
+    @Override
+    public UserDto convertToDto(User user) {
+        return modelMapper.map(user, UserDto.class);
     }
 }

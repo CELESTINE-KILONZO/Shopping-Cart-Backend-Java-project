@@ -1,4 +1,5 @@
 package com.cellythebackenddeveloper.shopping_cart.controller;
+import com.cellythebackenddeveloper.shopping_cart.dto.UserDto;
 import com.cellythebackenddeveloper.shopping_cart.exceptions.AlreadyExistException;
 import com.cellythebackenddeveloper.shopping_cart.exceptions.ResourceNotException;
 import com.cellythebackenddeveloper.shopping_cart.model.User;
@@ -23,7 +24,8 @@ public class UserController {
     public ResponseEntity <ApiResponse> getUserById(@PathVariable Long userId) {
         try {
             User user = userService.getUserById(userId);
-            return ResponseEntity.ok(new ApiResponse("User retrieved successfully", user));
+            UserDto userDtO = userService.convertToDto(user);
+            return ResponseEntity.ok(new ApiResponse("User retrieved successfully", userDtO));
         } catch (Exception e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
@@ -32,7 +34,8 @@ public class UserController {
     public ResponseEntity <ApiResponse> createNewUser(@RequestBody CreateUserRequest request) {
         try {
             User user = userService.createUser(request);
-            return ResponseEntity.ok(new ApiResponse("User created successfully", user));
+            UserDto userDtO = userService.convertToDto(user);
+            return ResponseEntity.ok(new ApiResponse("User created successfully", userDtO));
         } catch (AlreadyExistException e) {
             return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
         }
@@ -41,7 +44,8 @@ public class UserController {
     public ResponseEntity <ApiResponse> updateUser(@PathVariable Long userId, @RequestBody UpdateUserRequest request) {
         try {
             User updatedUser = userService.updateUser(userId, request);
-            return ResponseEntity.ok(new ApiResponse("User updated successfully", updatedUser));
+            UserDto userDtO = userService.convertToDto(updatedUser);
+            return ResponseEntity.ok(new ApiResponse("User updated successfully", userDtO));
         } catch (Exception e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
 }
