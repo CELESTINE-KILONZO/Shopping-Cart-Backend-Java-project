@@ -1,5 +1,6 @@
 package com.cellythebackenddeveloper.shopping_cart.model;
-import jakarta.persistence.*;
+import
+        jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
