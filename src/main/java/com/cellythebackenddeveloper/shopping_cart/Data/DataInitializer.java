@@ -27,8 +27,9 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             user.setFirstName("The user");
             user.setLastName("user" + i);
             user.setEmail(email);
+            user.setPassword(12345L + i + "");
             userRepository.save(user);
-            System.out.println("Default vet use" + i + "created successfully.");
+            System.out.println("Default vet user" +  " " + i + " " + "created successfully.");
         }
     }
 }

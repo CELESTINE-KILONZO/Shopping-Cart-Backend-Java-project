@@ -1,5 +1,7 @@
 package com.cellythebackenddeveloper.shopping_cart.service.Cart;
 import com.cellythebackenddeveloper.shopping_cart.model.Cart;
+import com.cellythebackenddeveloper.shopping_cart.model.User;
+
 import java.math.BigDecimal;
 
 public interface ICartService {
@@ -8,5 +10,6 @@ public interface ICartService {
     void clearCart(Long id);
     BigDecimal getTotalCartPrice(Long id);
     Long initializeNewCart();
+    Cart initializeNewCart(User user);
     Cart getCartByUserId(Long userId);
 }
