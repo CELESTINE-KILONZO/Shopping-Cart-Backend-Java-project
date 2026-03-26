@@ -1,4 +1,5 @@
 package com.cellythebackenddeveloper.shopping_cart.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class Product {
     private int inventory;
     private String description;
 
+    @JsonIgnore
 @ManyToOne(cascade = CascadeType.ALL)
 @JoinColumn(name = "category_id")
     private Category category;

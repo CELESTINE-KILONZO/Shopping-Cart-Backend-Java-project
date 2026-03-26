@@ -7,7 +7,6 @@ import com.cellythebackenddeveloper.shopping_cart.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 
 @Service
@@ -39,6 +38,11 @@ public class CartService implements ICartService {
     public BigDecimal getTotalCartPrice(Long id) {
         Cart cart = getCartById(id);
         return cart.getTotalAmount();
+    }
+
+    @Override
+    public Long initializeNewCart() {
+        return 0L;
     }
 
     @Override

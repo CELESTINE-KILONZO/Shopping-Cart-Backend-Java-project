@@ -1,4 +1,6 @@
 package com.cellythebackenddeveloper.shopping_cart.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,10 +23,14 @@ public class OrderItem {
     private Long id;
     private int quantity;
     private BigDecimal price;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-   @ManyToOne
+
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
