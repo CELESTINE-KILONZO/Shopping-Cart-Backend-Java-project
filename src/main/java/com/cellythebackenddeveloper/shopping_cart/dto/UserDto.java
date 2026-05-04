@@ -4,10 +4,10 @@ import java.util.List;
 
 @Data
 public class UserDto {
-    private Long UserId;
-    private String FirstName;
-    private String LastName;
-    private String Email;
+    private Long userId;
+    private String firstName;
+    private String lastName;
+    private String email;
     private List<OrderDto> orders;
     private CartDto cart;
 }

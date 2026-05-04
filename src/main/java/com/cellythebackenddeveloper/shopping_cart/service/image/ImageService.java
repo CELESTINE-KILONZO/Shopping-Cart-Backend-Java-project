@@ -41,6 +41,7 @@ public class ImageService implements IImageService {
     @Override
     public List<ImageDto> saveImage(List<MultipartFile> files, Long productId) {
       Product product= productService.getProductById(productId);
+        System.out.println("Here is the product id whose image you have: " + productId);
       List <ImageDto> savedImageDtos = new ArrayList<>();
         for (MultipartFile file : files) {
             try {

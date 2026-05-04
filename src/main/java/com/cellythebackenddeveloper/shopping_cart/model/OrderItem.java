@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 
 public class OrderItem {
 
-
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +28,6 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

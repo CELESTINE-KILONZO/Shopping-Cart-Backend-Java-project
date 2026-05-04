@@ -1,5 +1,6 @@
 package com.cellythebackenddeveloper.shopping_cart.service.order;
-import com.cellythebackenddeveloper.shopping_cart.dto.OrderDto;00000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+import com.cellythebackenddeveloper.shopping_cart.dto.OrderDto;
 import com.cellythebackenddeveloper.shopping_cart.enums.OrderStatus;
 import com.cellythebackenddeveloper.shopping_cart.exceptions.ResourceNotException;
 import com.cellythebackenddeveloper.shopping_cart.model.Cart;
@@ -12,6 +13,7 @@ import com.cellythebackenddeveloper.shopping_cart.service.Cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -38,7 +40,7 @@ public class OrderService implements iOrderService {
         return savedOrder;
     }
 
-    private Order createOrder(Cart cart){
+    private Order createOrder(Cart cart) {
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setOrderStatus(OrderStatus.PENDING);
@@ -46,24 +48,24 @@ public class OrderService implements iOrderService {
         return order;
     }
 
-    private List<OrderItem> createOrderItems(Order order , Cart cart) {
+    private List<OrderItem> createOrderItems(Order order, Cart cart) {
         return cart.getItems().stream().map(cartItem -> {
-                    Product product = cartItem.getProduct();
-                    product.setInventory(product.getInventory() - cartItem.getQuantity());
-                    productRepository.save(product);
-        return new OrderItem(
-                order,
-                product,
-                cartItem.getQuantity(),
-                cartItem.getUnitPrice()
-        );
-    }).toList();
-   }
+            Product product = cartItem.getProduct();
+            product.setInventory(product.getInventory() - cartItem.getQuantity());
+            productRepository.save(product);
+            return new OrderItem(
+                    order,
+                    product,
+                    cartItem.getQuantity(),
+                    cartItem.getUnitPrice()
+            );
+        }).toList();
+    }
 
     private BigDecimal calculateTotalAmount(List<OrderItem> orderItems) {
         return orderItems.stream()
                 .map(item -> item.getPrice()
-                        .multiply( new BigDecimal(item.getQuantity())))
+                        .multiply(new BigDecimal(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -82,7 +84,8 @@ public class OrderService implements iOrderService {
                 .toList();
     }
 
-    private OrderDto convertToDto(Order order) {
+    @Override
+    public OrderDto convertToDto(Order order) {
         return modelMapper.map(order, OrderDto.class);
     }
 }

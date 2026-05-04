@@ -24,6 +24,8 @@ public class ImageController {
 
     @PostMapping("/upload")
     public ResponseEntity<ApiResponse>saveImages(@RequestParam List<MultipartFile> files, @RequestParam Long productId){
+        System.out.println("here is the product1d:"+ productId);
+        System.out.println("here is the files:"+ files);
         try {
             List<ImageDto> ImageDtos=iimageService.saveImage(files,productId);
             return ResponseEntity.ok(new ApiResponse("Image saved successfully",ImageDtos));
