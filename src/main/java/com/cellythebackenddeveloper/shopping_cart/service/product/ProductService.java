@@ -2,6 +2,7 @@ package com.cellythebackenddeveloper.shopping_cart.service.product;
 import com.cellythebackenddeveloper.shopping_cart.dto.CategoryDto;
 import com.cellythebackenddeveloper.shopping_cart.dto.ImageDto;
 import com.cellythebackenddeveloper.shopping_cart.dto.ProductDto;
+import com.cellythebackenddeveloper.shopping_cart.exceptions.AlreadyExistException;
 import com.cellythebackenddeveloper.shopping_cart.exceptions.ProductNotFoundException;
 import com.cellythebackenddeveloper.shopping_cart.model.Category;
 import com.cellythebackenddeveloper.shopping_cart.model.Image;
@@ -29,6 +30,10 @@ public class ProductService implements IProductService {
     @Override
     public Product addProduct(AddProductRequest addProductRequest) {
 
+        if(productExists(addProductRequest.getName(), addProductRequest.getBrand())) {
+            throw new AlreadyExistException("Product with name: " + addProductRequest.getName() + " and brand: " + addProductRequest.getBrand() + " already exists.You may update this product instead");
+        }
+
         Category category = Optional.ofNullable(categoryRepository.findByName(addProductRequest.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(addProductRequest.getCategory().getName());
@@ -36,6 +41,10 @@ public class ProductService implements IProductService {
                 });
         addProductRequest.setCategory(category);
         return productRepository.save(createProduct(addProductRequest, category));
+    }
+
+    private boolean productExists(String name, String brand) {
+        return productRepository.existsByNameAndBrand(name, brand);
     }
 
     private Product createProduct(AddProductRequest addProductRequest, Category category) {

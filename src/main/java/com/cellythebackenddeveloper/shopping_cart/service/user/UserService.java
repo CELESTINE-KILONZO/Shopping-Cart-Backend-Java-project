@@ -1,4 +1,4 @@
-package com.cellythebackenddeveloper.shopping_cart.service.User;
+package com.cellythebackenddeveloper.shopping_cart.service.user;
 import com.cellythebackenddeveloper.shopping_cart.dto.UserDto;
 import com.cellythebackenddeveloper.shopping_cart.exceptions.AlreadyExistException;
 import com.cellythebackenddeveloper.shopping_cart.model.User;

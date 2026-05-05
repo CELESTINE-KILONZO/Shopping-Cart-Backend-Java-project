@@ -6,7 +6,7 @@ import com.cellythebackenddeveloper.shopping_cart.model.User;
 import com.cellythebackenddeveloper.shopping_cart.response.ApiResponse;
 import com.cellythebackenddeveloper.shopping_cart.service.Cart.ICartItemService;
 import com.cellythebackenddeveloper.shopping_cart.service.Cart.ICartService;
-import com.cellythebackenddeveloper.shopping_cart.service.User.IUserService;
+import com.cellythebackenddeveloper.shopping_cart.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class CartItemController {
     @PostMapping("/addItemToCart")
     public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long productId, @RequestParam int quantity) {
         try {
-            User user = iUserService.getUserById(12L);
+            User user = iUserService.getUserById(4L);
             Cart cart = cartService.initializeNewCart(user);
 
             cartItemService.addItemToCart(cart.getId(), productId, quantity);

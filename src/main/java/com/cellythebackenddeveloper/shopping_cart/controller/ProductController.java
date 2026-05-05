@@ -1,5 +1,6 @@
 package com.cellythebackenddeveloper.shopping_cart.controller;
 import com.cellythebackenddeveloper.shopping_cart.dto.ProductDto;
+import com.cellythebackenddeveloper.shopping_cart.exceptions.AlreadyExistException;
 import com.cellythebackenddeveloper.shopping_cart.model.Product;
 import com.cellythebackenddeveloper.shopping_cart.request.AddProductRequest;
 import com.cellythebackenddeveloper.shopping_cart.request.ProductUpdateRequest;
@@ -9,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("${api.prefix}/products")
@@ -24,7 +25,11 @@ public class ProductController {
         try {
             Product product = productService.addProduct(addProductRequest);
             return ResponseEntity.ok(new ApiResponse("Product created successfully", product));
-        } catch (Exception e) {
+        }
+        catch (AlreadyExistException e) {
+            return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
+        }
+        catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Failed to create product: ", null));
         }
     }

@@ -6,7 +6,7 @@ import com.cellythebackenddeveloper.shopping_cart.model.User;
 import com.cellythebackenddeveloper.shopping_cart.request.CreateUserRequest;
 import com.cellythebackenddeveloper.shopping_cart.request.UpdateUserRequest;
 import com.cellythebackenddeveloper.shopping_cart.response.ApiResponse;
-import com.cellythebackenddeveloper.shopping_cart.service.User.IUserService;
+import com.cellythebackenddeveloper.shopping_cart.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
