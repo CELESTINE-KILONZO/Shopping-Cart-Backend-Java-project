@@ -29,8 +29,9 @@ public class ShowConfig {
     private final ShopUserDetailsService shopUserDetailsService;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
-    private static final List <String> SECURED_URLS = List.of("");
+    private static final List<String> SECURED_URLS = List.of( "/shopping/v1/api/carts/**", "/shopping/v1/api/cartItems/**");
 
+//"/shoppingcart/v1/api/products/**", "/shoppingcart/v1/api/orders/**","/shoppingcart/v1/api/users/**",  "/shopping/v1/api/category/**", "/shopping/v1/api/images/**"
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();

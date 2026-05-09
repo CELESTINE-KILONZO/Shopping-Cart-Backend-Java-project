@@ -7,11 +7,13 @@ import com.cellythebackenddeveloper.shopping_cart.response.ApiResponse;
 import com.cellythebackenddeveloper.shopping_cart.service.Cart.ICartItemService;
 import com.cellythebackenddeveloper.shopping_cart.service.Cart.ICartService;
 import com.cellythebackenddeveloper.shopping_cart.service.user.IUserService;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,13 +26,15 @@ public class CartItemController {
     @PostMapping("/addItemToCart")
     public ResponseEntity<ApiResponse> addItemToCart(@RequestParam Long productId, @RequestParam int quantity) {
         try {
-            User user = iUserService.getUserById(4L);
+            User user = iUserService.getAuthenticatedUser();
             Cart cart = cartService.initializeNewCart(user);
 
             cartItemService.addItemToCart(cart.getId(), productId, quantity);
             return ResponseEntity.ok(new ApiResponse("Item added to cart successfully", null));
         } catch (ResourceNotException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        }catch(JwtException e){
+            return ResponseEntity.status(UNAUTHORIZED).body(new ApiResponse("Unauthorized: " + e.getMessage(), null));
         }
     }
 
