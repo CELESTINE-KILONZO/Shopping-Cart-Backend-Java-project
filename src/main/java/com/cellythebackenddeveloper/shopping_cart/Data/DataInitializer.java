@@ -37,13 +37,12 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
                 continue;
             }
             User user = new User();
-            user.setFirstName("Admin");
-            user.setLastName("Admin" + i);
+            user.setFirstName("The user");
+            user.setLastName("user" + i);
             user.setEmail(email);
             user.setPassword(passwordEncoder.encode("123456" + i));
             user.setRoles(Set.of(userRole));
             userRepository.save(user);
-            System.out.println("Default admin " +  " " + i + " " + "created successfully.");
         }
     }
 
@@ -55,13 +54,12 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
                 continue;
             }
             User user = new User();
-            user.setFirstName("The user");
-            user.setLastName("user" + i);
+            user.setFirstName("The Admin");
+            user.setLastName("admin" + i);
             user.setEmail(email);
             user.setPassword(passwordEncoder.encode("123456" + i));
             user.setRoles(Set.of(adminRole));
             userRepository.save(user);
-            System.out.println("Default vet user" +  " " + i + " " + "created successfully.");
         }
     }
 

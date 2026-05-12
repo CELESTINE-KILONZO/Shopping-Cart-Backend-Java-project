@@ -8,6 +8,7 @@ import com.cellythebackenddeveloper.shopping_cart.response.ApiResponse;
 import com.cellythebackenddeveloper.shopping_cart.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import static org.springframework.http.HttpStatus.*;
 public class ProductController {
     private final IProductService productService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/createProduct")
     public ResponseEntity<ApiResponse> createProduct(@RequestBody AddProductRequest addProductRequest) {
         try {
@@ -145,7 +147,8 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/{id}/updateproduct")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/product/{id}/updateproduct")
     public ResponseEntity<ApiResponse> updateProduct(Long id, ProductUpdateRequest productUpdateRequest) {
         try {
             Product updatedProduct = productService.updateProduct(productUpdateRequest, id);
@@ -155,7 +158,8 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/{id}/deleteproduct")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/product/{id}/deleteproduct")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long id) {
         try {
             productService.deleteProductById(id);

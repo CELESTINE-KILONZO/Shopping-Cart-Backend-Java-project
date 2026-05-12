@@ -2,6 +2,7 @@ package com.cellythebackenddeveloper.shopping_cart.security.config;
 
 import com.cellythebackenddeveloper.shopping_cart.security.jwt.AuthTokenFilter;
 import com.cellythebackenddeveloper.shopping_cart.security.jwt.JwtAuthEntryPoint;
+import com.cellythebackenddeveloper.shopping_cart.security.jwt.JwtUtils;
 import com.cellythebackenddeveloper.shopping_cart.security.user.ShopUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,14 +26,14 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Configuration
-
+@EnableMethodSecurity(prePostEnabled = true)
 public class ShowConfig {
     private final ShopUserDetailsService shopUserDetailsService;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final JwtUtils jwtUtils;
 
-    private static final List<String> SECURED_URLS = List.of( "/shopping/v1/api/carts/**", "/shopping/v1/api/cartItems/**");
+    private static final List<String> SECURED_URLS = List.of( "/shoppingcart/v1/api/carts/**", "/shoppingcart/v1/api/cartItems/**");
 
-//"/shoppingcart/v1/api/products/**", "/shoppingcart/v1/api/orders/**","/shoppingcart/v1/api/users/**",  "/shopping/v1/api/category/**", "/shopping/v1/api/images/**"
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
@@ -44,7 +46,7 @@ public class ShowConfig {
 
     @Bean
     public AuthTokenFilter authTokenFilter() {
-        return new AuthTokenFilter();
+        return new AuthTokenFilter(jwtUtils, shopUserDetailsService);
     }
 
     @Bean
